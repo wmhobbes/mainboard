@@ -1,0 +1,52 @@
+.group
+  =f.label :name
+  =f.error_message_on :name
+  =f.text_field :name, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :surname
+  =f.error_message_on :surname
+  =f.text_field :surname, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :identity
+  =f.error_message_on :identity
+  =f.text_field :identity, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :password
+  =f.error_message_on :password
+  =f.password_field :password, :class => :password_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :password_confirmation
+  =f.error_message_on :password_confirmation
+  =f.password_field :password_confirmation, :class => :password_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :key
+  =f.error_message_on :key
+  =f.text_field :key, :class => :text_field, :disabled => true
+  =link_to 'Regenerate Secret', url(:accounts, :regenerate_key, :id => account.id), :class => :additional_btn
+
+.group
+  =f.label :secret
+  =f.error_message_on :secret
+  =f.text_field :secret, :class => :text_field, :disabled => true
+  =link_to 'Regenerate Secret', url(:accounts, :regenerate_key, :id => account.id), :class => :additional_btn
+
+.group
+  =f.label :role
+  =f.error_message_on :role
+  =f.select :role, :options => access_control.roles
+  %span.description Ex: a simple text
+
+
+.group.navform.wat-cf
+  =f.submit pat(:save), :class => :button
+  =f.submit pat(:cancel), :onclick => "window.location='#{url(:accounts, :index)}';return false", :class => :button

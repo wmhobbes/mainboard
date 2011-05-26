@@ -1,0 +1,31 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}
+    %title Mainboard Admin
+    =stylesheet_link_tag "http://fonts.googleapis.com/css?family=Ubuntu"
+    =stylesheet_link_tag :base, "themes/default/style"
+  %body
+    #container
+      #box
+        %h1 Mainboard Admin
+        #block-login.block
+          %h2 Login Box
+          .content.login
+            .flash=[:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join
+            -form_tag(url(:sessions, :create), :class => 'form login') do
+              .group.wat-cf
+                .left
+                  %label.label.right Identity
+                .right=text_field_tag :identity, :value => params[:identity], :class => :text_field
+              .group.wat-cf
+                .left
+                  %label.label.right Password
+                .right=password_field_tag :password, :value => params[:password], :class => :text_field
+              -if Padrino.env == :development
+                .group.wat-cf
+                  .left
+                    %label.label.right Bypass login?
+                  .right=check_box_tag :bypass
+              .group.navform.wat-cf
+                .right=submit_tag('Sign In', :class => :button)

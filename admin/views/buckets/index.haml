@@ -1,0 +1,37 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active=link_to pat(:list), url(:buckets, :index)
+      %li=link_to pat(:new), url(:buckets, :new)
+  .content
+    %h2.title
+      =pat(:all)
+      =mt(:buckets)
+    .inner
+      %table.table
+        %tr
+          %th.first=mat(:bucket, :account_id)
+          %th=mat(:bucket, :type)
+          %th=mat(:bucket, :name)
+          %th=mat(:bucket, :created_at)
+          %th=mat(:bucket, :updated_at)
+          %th=mat(:bucket, :access)
+          %th=mat(:bucket, :meta)
+          %th.last="&nbsp;"
+        -@buckets.each do |bucket|
+          %tr
+            %td.first=bucket.account_id
+            %td=bucket.type
+            %td=bucket.name
+            %td=bucket.created_at
+            %td=bucket.updated_at
+            %td=bucket.access
+            %td=bucket.meta
+            %td.last
+              =button_to pat(:edit), url(:buckets, :edit, :id => bucket.id), :method => :get, :class => :button_to
+              ="|"
+              =button_to pat(:delete), url(:buckets, :destroy, :id => bucket.id), :method => :delete, :class => :button_to, :onsubmit => "return confirm('#{pat(:confirm)}')"
+      .actions-bar.wat-cf
+        .actions="&nbsp;"
+
+-content_for :sidebar, partial("base/sidebar")

@@ -1,0 +1,15 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first=link_to pat(:list), url(:buckets, :index)
+      %li=link_to pat(:new), url(:buckets, :new)
+      %li.active=link_to pat(:edit), url(:buckets, :edit, :id => @bucket.id)
+  .content
+    %h2.title
+      =pat(:edit)
+      =mt(:bucket)
+    .inner
+      -form_for :bucket, url(:buckets, :update, :id => @bucket.id), :method => :put, :class => :form do |f|
+        =partial "buckets/form", :locals => { :f => f }
+
+-content_for :sidebar, partial("base/sidebar")
