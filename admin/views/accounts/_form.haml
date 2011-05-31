@@ -2,49 +2,60 @@
   =f.label :name
   =f.error_message_on :name
   =f.text_field :name, :class => :text_field
-  %span.description Ex: a simple text
+  %span.description The first name of the person.
 
 .group
   =f.label :surname
   =f.error_message_on :surname
   =f.text_field :surname, :class => :text_field
-  %span.description Ex: a simple text
+  %span.description Last name of the person.
 
 .group
   =f.label :identity
   =f.error_message_on :identity
-  =f.text_field :identity, :class => :text_field
-  %span.description Ex: a simple text
+  - if(current_account.administrator?)
+    =f.text_field :identity, :class => :text_field
+  - else
+    =f.text_field :identity, :class => :text_field, :disabled => true
+  %span.description identity has the form of an email address, eg: john.smith@example.com.
 
 .group
   =f.label :password
   =f.error_message_on :password
   =f.password_field :password, :class => :password_field
-  %span.description Ex: a simple text
+  %span.description Choose you password wisely.
 
 .group
   =f.label :password_confirmation
   =f.error_message_on :password_confirmation
   =f.password_field :password_confirmation, :class => :password_field
-  %span.description Ex: a simple text
+  %span.description Repeat your password so we can check you typed it properly.
 
-.group
-  =f.label :key
-  =f.error_message_on :key
-  =f.text_field :key, :class => :text_field, :disabled => true
-  =link_to 'Regenerate Secret', url(:accounts, :regenerate_key, :id => account.id), :class => :additional_btn
+- if(account)
+  .group
+    =f.label :key
+    =f.error_message_on :key
+    =f.text_field :key, :class => :text_field, :disabled => true
+    %span.description This is the API identity key.
+    - if(current_account.administrator?)
+      =link_to 'Regenerate Key', url(:accounts, :regenerate_key, :id => account.id), :class => :additional_btn
 
-.group
-  =f.label :secret
-  =f.error_message_on :secret
-  =f.text_field :secret, :class => :text_field, :disabled => true
-  =link_to 'Regenerate Secret', url(:accounts, :regenerate_key, :id => account.id), :class => :additional_btn
 
-.group
-  =f.label :role
-  =f.error_message_on :role
-  =f.select :role, :options => access_control.roles
-  %span.description Ex: a simple text
+- if(account)
+  .group
+    =f.label :secret
+    =f.error_message_on :secret
+    =f.text_field :secret, :class => :text_field, :disabled => true
+    %span.description This is the secret string used to identify to the API.
+    - if(current_account.administrator?)
+      =link_to 'Regenerate Secret', url(:accounts, :regenerate_secret, :id => account.id), :class => :additional_btn
+
+- if(current_account.administrator?)
+  .group
+    =f.label :role
+    =f.error_message_on :role
+    =f.select :role, :options => access_control.roles
+    %span.description Ex: a simple text
 
 
 .group.navform.wat-cf

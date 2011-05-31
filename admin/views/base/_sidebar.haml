@@ -1,11 +1,44 @@
 .block
-  %h3 Simple Block
+  %h3 In a glance
   .content
-    %p
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-.block
-  %h3 Links
-  %ul.navigation
-    %li=link_to "Link 1"
-    %li=link_to "Link 2"
+    %table.table
+      %tr
+        %td Buckets:
+        %td
+          =Bucket.count
+      %tr
+        %td Slots:
+        %td =      
+      %tr
+        %td Total Size:
+        %td =
+      %tr
+        
+- if current_account.administrator?
+  .block
+    %h3 In the system
+    .content
+      %table.table
+        %tr
+          %td Accounts:
+          %td 
+            =Account.count      
+        %tr
+          %td Buckets:
+          %td 
+            =Bucket.count
+        %tr
+          %td Slots:
+          %td 
+            =Slot.count
+        %tr
+          %td Total Size:
+          %td =
+        %tr      
+      
+- if false
+  .block
+    %h3 Links
+    %ul.navigation
+      %li=link_to "Link 1"
+      %li=link_to "Link 2"

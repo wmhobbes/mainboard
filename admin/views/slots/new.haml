@@ -1,14 +1,14 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first=link_to pat(:list), url(:slots, :index)
-      %li.active=link_to pat(:new), url(:slots, :new)
+      %li.first=link_to pat(:list), url(:slots, :index, :bucket_id => @bucket.id)
+      %li.active=link_to pat(:new), url(:slots, :new, :bucket_id => @bucket.id)
   .content
     %h2.title
       =pat(:new)
       =mt(:slot)
     .inner
-      -form_for :slot, url(:slots, :create), :class => :form do |f|
-        =partial "slots/form", :locals => { :f => f }
+      -form_for :slot, url(:slots, :create, :bucket_id => @bucket.id), :multipart => true, :class => :form do |f|
+        =partial "slots/form_new", :locals => { :f => f }
 
 -content_for :sidebar, partial("base/sidebar")

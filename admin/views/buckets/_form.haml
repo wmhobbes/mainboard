@@ -1,32 +1,27 @@
-.group
-  =f.label :account_id
-  =f.error_message_on :account_id
-  =f.text_field :account_id, :class => :text_field
-  %span.description Ex: a simple text
-
-.group
-  =f.label :type
-  =f.error_message_on :type
-  =f.text_field :type, :class => :text_field
-  %span.description Ex: a simple text
+- if false
+  .group
+    =f.label :type
+    =f.error_message_on :type
+    =f.text_field :type, :class => :text_field
+    %span.description Ex: a simple text
 
 .group
   =f.label :name
   =f.error_message_on :name
   =f.text_field :name, :class => :text_field
-  %span.description Ex: a simple text
-
-.group
-  =f.label :access
-  =f.error_message_on :access
-  =f.text_field :access, :class => :text_field
-  %span.description Ex: a simple text
+  %span.description A name for the bucket. Must be a valid host name.
 
 .group
   =f.label :meta
   =f.error_message_on :meta
   =f.text_field :meta, :class => :text_field
-  %span.description Ex: a simple text
+  %span.description Metadata for this bucket.
+
+.group
+  =f.label :access
+  =f.error_message_on :access
+  =f.select :access, :options => AWS::S3::ACLs::CANNED_ACLS
+  %span.description controls the access to the entire bucket.
 
 
 .group.navform.wat-cf

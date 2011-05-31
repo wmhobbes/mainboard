@@ -20,6 +20,31 @@ Admin.controllers :accounts do
     end
   end
 
+  get :profile do 
+    @account = current_account
+    render 'accounts/profile'
+  end
+
+  put :update_profile do
+    @account = Account.find(params[:id])
+    
+    profile = allow_attributes(params[:account], 
+      :id,
+      :name,
+      :surname,
+      :password,
+      :password_confirmation
+    )
+    
+    if current_account.update_attributes(params[:account])
+      flash[:notice] = 'Account was successfully updated.'
+      redirect url(:accounts, :profile)
+    else
+      render 'accounts/profile'
+    end    
+    
+  end
+
   get :edit, :with => :id do
     @account = Account.find(params[:id])
     render 'accounts/edit'
@@ -46,12 +71,16 @@ Admin.controllers :accounts do
   end
 
   get :regenerate_key, :with => :id do
-
-    "hello"
+    @account = Account.find(params[:id])
+    @account.regenerate_key.save!
+    flash[:notice] = "Account key was regenerated"
+    redirect url(:accounts, :edit, :id => @account.id)
   end
 
   get :regenerate_secret, :with => :id do
-
-    "hello"
+    @account = Account.find(params[:id])
+    @account.regenerate_secret.save!
+    flash[:notice] = "Account secret was regenerated"
+    redirect url(:accounts, :edit, :id => @account.id)
   end
 end

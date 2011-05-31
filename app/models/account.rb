@@ -12,10 +12,13 @@ class Account
   key :key,              String,   :limit => 64,       :required => true
   key :secret,           String,   :limit => 64,       :required => true
 
-  key :created_at,    Time
+  timestamps!
   key :activated_at,  Time
 
   key :deleted,       Boolean,  :default => false
+
+  ensure_index :identity
+  ensure_index :key
 
   # Validations
   validates_presence_of     :email, :role
@@ -23,18 +26,25 @@ class Account
   validates_presence_of     :password_confirmation,      :if => :password_required
   validates_length_of       :password, :within => 4..40, :if => :password_required
   validates_confirmation_of :password,                   :if => :password_required
-  validates_length_of       :email,    :within => 3..100
-  validates_uniqueness_of   :email,    :case_sensitive => false
-  validates_format_of       :email,    :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
+  validates_length_of       :identity, :within => 3..100
+  validates_uniqueness_of   :identity, :case_sensitive => false
+  validates_format_of       :identity, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_format_of       :role,     :with => /[A-Za-z]/
 
   validates_uniqueness_of   :key
 
-  many :buckets
+  many :buckets,            :dependent => :destroy
+
+  scope :admins,            where(:role => :admin)
+  scope :users,             where(:role => :user)
+
+  scope :active,            where(:deleted => false)
+
+  #attr_accessible           :identity, :name, :surname, :role, :key
 
   # Callbacks
   before_validation :ensure_key_secret, :if => :missing_key_secret?
-  before_save :encrypt_password, :if => :password_required
+  before_save :encrypt_password,        :if => :password_required
 
   # our identity will be the email
   alias_method :email,  :identity
@@ -50,6 +60,30 @@ class Account
 
   def has_password?(password)
     ::BCrypt::Password.new(crypted_password) == password
+  end
+  
+  def administrator?
+    self.role.to_sym == :admin 
+  end
+
+  def writable_by? passed_account
+    passed_account.administrator? || self == passed_account
+  end
+
+  def update_these_attributes(attrs, *filter)
+    update_attributes attrs.select { |k,v| filter.include? k }
+  end
+
+  def regenerate_key
+    self.key = self.class.generate_key
+    # a new key needs a new secret
+    regenerate_secret
+    self
+  end
+  
+  def regenerate_secret
+    self.secret = self.class.generate_secret
+    self
   end
 
   private

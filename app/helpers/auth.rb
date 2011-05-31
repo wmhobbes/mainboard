@@ -4,16 +4,12 @@ Mainboard.helpers do
         auth = AWS::S3::Authentication::Request.new(request)
         @amz_headers = auth.amz_headers
 
-        @account = Account.first(:conditions => {:key => auth.key})
-        return if @account && auth.validate_secret(@account.secret)
-        raise BadAuthentication
+        account = Account.first(:conditions => {:key => auth.key})
+        if account && auth.validate_secret(account.secret)
+          logger.debug "Logged as: #{account.identity}"
+          @account = account
+        end
       end
-
-#      def login_required
-#       if session[:user].nil?
-#         redirect '/control/login'
-#       end
-#      end
 
       def unset_current_account
        session[:account] = nil

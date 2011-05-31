@@ -4,10 +4,10 @@ describe 'REST service, the bucket API' do
 
   before do
 
-    user = Account.where(:role => :admin).first
+    account = Account.where(:role => :admin).first
     @s3_settings = {
-      :key => user.key,
-      :secret => user.secret,
+      :key => account.key,
+      :secret => account.secret,
       :bucket_name => 'none',
       :settings => {
         :server => '127.0.0.1',
@@ -18,11 +18,9 @@ describe 'REST service, the bucket API' do
     @service = RightAws::S3.new @s3_settings[:key], @s3_settings[:secret], @s3_settings[:settings]
   end
 
-
   it 'lets a user retrieve a list of buckets' do
     @service.buckets.class.should == Array
   end
-
 
   it 'lets a user add and delete a new bucket' do
     bucket = @service.bucket('boardwalk_test_new', true, 'public-read')

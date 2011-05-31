@@ -1,0 +1,37 @@
+
+.group
+  =f.label :file
+  =f.error_message_on :uploaded_file
+  =f.file_field :uploaded_file, :class => :file_field
+
+
+.group
+  =f.label :file_path
+  =f.error_message_on :bit_name
+  =f.text_field :bit_name, :class => :text_field
+  %span.description The path for this file bar.foo', it can include slashes: '/baz/foo.bar'.
+
+
+-if false
+  .group
+    =f.label :bit_size
+    =f.error_message_on :bit_size
+    =f.text_field :bit_size, :class => :text_field
+    %span.description Ex: a simple text
+
+  .group
+    =f.label :bit_type
+    =f.error_message_on :bit_type
+    =f.text_field :bit_type, :class => :text_field
+    %span.description Ex: a simple text
+
+.group
+  =f.label :access
+  =f.error_message_on :access
+  =f.select :access, :options => AWS::S3::ACLs::CANNED_ACLS
+  %span.description controls the access to this slot.
+
+
+.group.navform.wat-cf
+  =f.submit pat(:save), :class => :button
+  =f.submit pat(:cancel), :onclick => "window.location='#{url(:slots, :index, :bucket_id => @bucket.id)}';return false", :class => :button

@@ -2,8 +2,8 @@ require 'rack/fiber_pool'
 require 'pp'
 
 class Mainboard < Padrino::Application
-  use Rack::FiberPool
-  use Rack::Session::Cookie
+#  use Rack::FiberPool
+#  use Rack::Session::Cookie
   register Padrino::Mailer
   register Padrino::Helpers
 
@@ -65,6 +65,7 @@ class Mainboard < Padrino::Application
   #
 
   # the main application should generate XML exceptions
+  disable :flash
   disable :show_exceptions
   #set :dump_errors, false
 end

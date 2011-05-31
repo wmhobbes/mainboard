@@ -31,9 +31,10 @@ Mainboard.helpers do
   def get_bucket bucket_name
     bucket = Bucket.first(:name => bucket_name)
     raise NoSuchBucket unless bucket
+    bucket
   end
 
-  def get_bucket_entries bucket_name
+  def get_bucket_content bucket_name
     bucket = get_bucket bucket_name
 
     aws_only_can_read bucket
@@ -103,8 +104,8 @@ Mainboard.helpers do
             x.StorageClass "STANDARD"
 
             x.Owner {
-              x.ID c.bucket.user.s3key
-              x.DisplayName c.bucket.user.login
+              x.ID c.bucket.account.key
+              x.DisplayName c.bucket.account.identity
             }
           end
         }

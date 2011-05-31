@@ -1,18 +1,22 @@
 class Bucket
   include MongoMapper::Document
+  include AWS::S3::ACLs
 
   key :account_id,  ObjectId
-  key :type,        String,   :length => 6,   :default => 'data'
+  key :type,        String,   :length => 6,   :default => :data
   key :name,        String,   :length => 255, :format => /^[-\w]+$/
-  key :created_at,  Time
-  key :updated_at,  Time
+
   key :access,      Integer
   key :meta,        String
+
+  timestamps!
+
+  ensure_index :name
 
   validates_uniqueness_of :name
 
   belongs_to :account
-  many :slots
+  many :slots,      :dependent => :destroy
 
   def access_readable
     name, _ = CANNED_ACLS.find { |k, v| v == self.access }

@@ -1,5 +1,6 @@
 class Slot
   include MongoMapper::Document
+  include AWS::S3::ACLs
 
   plugin Joint
 
@@ -7,10 +8,12 @@ class Slot
 
   key :bucket_id,   ObjectId
   key :access,      Integer
-  key :created_at,  Time
-  key :updated_at,  Time
+
+  timestamps!
 
   belongs_to :bucket
+
+  validates_presence_of :bit_name
 
   def access_readable
     name, _ = CANNED_ACLS.find { |k, v| v == self.access }
@@ -31,7 +34,7 @@ class Slot
   end
 
   def owned_by? current_account
-    current_account and bucket.account.login == current_account.login
+    current_account and bucket.account.identity == current_account.identity
   end
 
   def writable_by? current_account

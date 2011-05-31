@@ -10,22 +10,26 @@
     .inner
       %table.table
         %tr
-          %th.first=mat(:bucket, :account_id)
+          %th.first=mat(:bucket, :name)
           %th=mat(:bucket, :type)
-          %th=mat(:bucket, :name)
-          %th=mat(:bucket, :created_at)
-          %th=mat(:bucket, :updated_at)
+          %th=mat(:bucket, :slots)
+          %th=mat(:bucket, :account_id)
+          - if false
+            %th=mat(:bucket, :created_at)
+            %th=mat(:bucket, :updated_at)
           %th=mat(:bucket, :access)
           %th=mat(:bucket, :meta)
           %th.last="&nbsp;"
         -@buckets.each do |bucket|
           %tr
-            %td.first=bucket.account_id
+            %td.first=link_to bucket.name, url(:slots, :index, :bucket_id => bucket.id), :method => :get
             %td=bucket.type
-            %td=bucket.name
-            %td=bucket.created_at
-            %td=bucket.updated_at
-            %td=bucket.access
+            %td=bucket.slots.count
+            %td=bucket.account.identity
+            - if false
+              %td=bucket.created_at
+              %td=bucket.updated_at
+            %td=acl(bucket.access)
             %td=bucket.meta
             %td.last
               =button_to pat(:edit), url(:buckets, :edit, :id => bucket.id), :method => :get, :class => :button_to

@@ -1,8 +1,8 @@
 .block
   .secondary-navigation
     %ul.wat-cf
-      %li.first.active=link_to pat(:list), url(:slots, :index)
-      %li=link_to pat(:new), url(:slots, :new)
+      %li.first.active=link_to pat(:list), url(:slots, :index, :bucket_id => @bucket.id)
+      %li=link_to pat(:new), url(:slots, :new, :bucket_id => @bucket.id)
   .content
     %h2.title
       =pat(:all)
@@ -10,29 +10,23 @@
     .inner
       %table.table
         %tr
-          %th.first=mat(:slot, :bit_id)
-          %th=mat(:slot, :bit_name)
-          %th=mat(:slot, :bit_size)
-          %th=mat(:slot, :bit_type)
-          %th=mat(:slot, :bucket_id)
+          %th.first=mat(:slot, :file_name)
+          %th=mat(:slot, :size)
+          %th=mat(:slot, :type)
           %th=mat(:slot, :access)
-          %th=mat(:slot, :created_at)
-          %th=mat(:slot, :updated_at)
+          %th=mat(:slot, :updated)
           %th.last="&nbsp;"
         -@slots.each do |slot|
           %tr
-            %td.first=slot.bit_id
-            %td=slot.bit_name
+            %td.first=link_to slot.bit_name, url(:slots, :slot, :id => slot.id, :bucket_id => @bucket.id)
             %td=slot.bit_size
             %td=slot.bit_type
-            %td=slot.bucket_id
-            %td=slot.access
-            %td=slot.created_at
+            %td=acl slot.access
             %td=slot.updated_at
             %td.last
-              =button_to pat(:edit), url(:slots, :edit, :id => slot.id), :method => :get, :class => :button_to
+              =button_to pat(:edit), url(:slots, :edit, :id => slot.id, :bucket_id => @bucket.id), :method => :get, :class => :button_to
               ="|"
-              =button_to pat(:delete), url(:slots, :destroy, :id => slot.id), :method => :delete, :class => :button_to, :onsubmit => "return confirm('#{pat(:confirm)}')"
+              =button_to pat(:delete), url(:slots, :destroy, :id => slot.id, :bucket_id => @bucket.id), :method => :delete, :class => :button_to, :onsubmit => "return confirm('#{pat(:confirm)}')"
       .actions-bar.wat-cf
         .actions="&nbsp;"
 

@@ -17,8 +17,9 @@ module AWS
           extract_auth
           @canonical = CanonicalString.new(request)
           #pp request.env
-          pp @canonical.headers
-          pp @canonical
+          #puts "-- auth ---"
+          #pp @canonical.headers
+          #pp @canonical
         end
 
         def validate_secret(secret_access_key)

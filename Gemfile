@@ -11,7 +11,7 @@ gem 'bcrypt-ruby', :require => "bcrypt"
 
 # template
 gem 'mime-types', '1.16'
-gem 'wand', '0.2.1'
+gem 'wand', '~> 0.4'
 gem 'tilt', '>= 1.1'
 gem 'haml', '~> 3.1'
 
@@ -19,8 +19,8 @@ gem 'haml', '~> 3.1'
 gem 'builder'
 
 # database
-gem 'mongo_mapper', '~> 0.9'
-gem 'joint'
+gem 'mongo_mapper', '~> 0.9.1'
+gem 'joint', :git => 'https://github.com/wmhobbes/joint.git'
 gem 'plucky'
 gem 'bson_ext', :require => "mongo"
 

@@ -21,6 +21,7 @@ class Admin < Padrino::Application
 
   set :login_page, "/admin/sessions/new"
 
+  enable :authentication
   enable :sessions
   disable :store_location
 
@@ -34,4 +35,12 @@ class Admin < Padrino::Application
     role.project_module :buckets, "/buckets"
     role.project_module :accounts, "/accounts"
   end
+
+  access_control.roles_for :user do |role|
+    role.project_module :slots, "/slots"
+    role.project_module :buckets, "/buckets"
+    role.allow '/accounts/profile'
+    role.allow '/accounts/update_profile'
+  end
+
 end
