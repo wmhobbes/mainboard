@@ -9,6 +9,8 @@ gem 'rack-fiber_pool', '~> 0.9.1'
 # Component requirements
 gem 'bcrypt-ruby', :require => "bcrypt"
 
+gem 'miniconf'
+
 # template
 gem 'mime-types', '1.16'
 gem 'wand', '~> 0.4'

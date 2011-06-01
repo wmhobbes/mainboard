@@ -60,6 +60,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    miniconf (0.0.1)
     mongo (1.3.1)
       bson (>= 1.3.1)
     mongo_mapper (0.9.1)
@@ -165,6 +166,7 @@ DEPENDENCIES
   haml (~> 3.1)
   joint!
   mime-types (= 1.16)
+  miniconf
   mongo_mapper (~> 0.9.1)
   padrino (= 0.9.29)
   plucky

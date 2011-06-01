@@ -9,14 +9,17 @@ require "logger"
 require "pp"
 Bundler.require(:default, PADRINO_ENV)
 
-# autoconf
-require File.expand_path('ext/miniconf/miniconf', PADRINO_ROOT)
+# miniconf
 Miniconf.defaults do
   database.host = 'localhost'
   database.port = 27017
-  database.db = 'mainboard'
+  database.name = 'mainboard'
 end
-Miniconf.boot! :root => PADRINO_ROOT, :env_prefix => 'mainboard', :env => PADRINO_ENV
+Miniconf.boot! :root => PADRINO_ROOT, :env_prefix => 'mainboard', :env => PADRINO_ENV,
+  :database_service => 'mongodb'
+
+puts Miniconf.config.database.to_s
+
 
 ##
 # Enable devel logging
@@ -30,9 +33,8 @@ Miniconf.boot! :root => PADRINO_ROOT, :env_prefix => 'mainboard', :env => PADRIN
 #
 Padrino.before_load do
   Miniconf.with_config do |c|
-    logger.debug "-- options --\n#{c.options}"
-    logger.debug "-- database --\n#{c.database}"
-    logger.debug "-- vcap --\n#{c.vcap if c.vcap }"
+    logger.debug "-- options --\n#{c.to_s}"
+
   end
 end
 
