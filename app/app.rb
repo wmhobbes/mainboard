@@ -1,4 +1,4 @@
-require 'rack/fiber_pool'
+#require 'rack/fiber_pool'
 require 'pp'
 
 class Mainboard < Padrino::Application

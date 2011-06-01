@@ -9,7 +9,8 @@ Mainboard.helpers do
           raise BadAuthentication
         end
 
-
+        logger.debug "- authenticated as #{@account.identity}" if @account
+        logger.debug @amz_headers.pretty_inspect
       end
 
       def anonymous_request?

@@ -38,7 +38,7 @@ Mainboard.helpers do
   end
 
   def get_slot bucket, slot_name
-    slot = bucket.slots.where(:file_name => slot_name).first
+    slot = bucket.slots.where(:bit_name => slot_name).first
     raise NoSuchKey if slot.nil?
     slot
   end
@@ -48,13 +48,13 @@ Mainboard.helpers do
 
     only_can_write bucket
 
-    slot = bucket.slots.where(:file_name => slot_name).first
-    io.path = slot_name
+    slot = bucket.slots.where(:bit_name => slot_name).first
+    io.path = slot_name if io.kind_of? StringIO
 
     if slot.nil?
       slot = bucket.slots.create(
         :bit => io,
-        :file_name => slot_name,
+        :bit_name => slot_name,
         :access => amz_requested_acl
       )
     else

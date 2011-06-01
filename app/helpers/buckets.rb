@@ -39,6 +39,8 @@ Mainboard.helpers do
 
     only_can_read bucket
 
+    @input = request.params
+
     opts = {:conditions => {:bucket_id => bucket.id}, :order => "name"}
     limit = nil
 
@@ -68,7 +70,7 @@ Mainboard.helpers do
       prefixes = contents.inject({}) do |hash, c|
         prefix = get_prefix(c).to_sym
         hash[prefix] = [] unless hash[prefix]
-        hash[prefix] << c.file_name
+        hash[prefix] << c.bit_name
         hash
       end
 
@@ -86,7 +88,10 @@ Mainboard.helpers do
       logger.debug "\e[1;31mContents:\e[0m " + contents.inspect
     end
 
+    content_type "application/xml"
+
     builder { |x|
+      x.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
       x.ListBucketResult :xmlns => "http://s3.amazonaws.com/doc/2006-03-01/" do
         x.Name bucket.name
         x.Prefix @input['prefix'] if @input['prefix']
@@ -97,9 +102,9 @@ Mainboard.helpers do
 
         contents.each { |c|
           x.Contents do
-            x.Key c.file_name
+            x.Key c.bit_name
             x.LastModified c.bit.upload_date.strftime("%Y-%m-%dT%H:%M:%S.000%Z")
-            x.ETag c.bit.grid_io.server_md5
+            x.ETag c.bit.get_md5
             x.Size c.bit.grid_io.file_length.to_i
             x.StorageClass "STANDARD"
 
@@ -159,4 +164,9 @@ Mainboard.helpers do
     end
 
   end
+
+  def get_prefix c
+    c.bit_name.sub(@input['prefix'], '').split(@input['delimiter'])[0] + @input['delimiter']
+  end
+
 end
