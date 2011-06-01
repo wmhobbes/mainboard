@@ -56,6 +56,7 @@ hr {
 
 #header {
   background: #36393d;
+  box-shadow: 0px 5px 15px #888;
 }
 
 #header h1 {
@@ -85,6 +86,11 @@ hr {
 	-webkit-border-radius: 3px;
 }
 
+#main .block {
+  box-shadow: 5px 5px 15px #888;
+	
+}
+
 #main .block .content {
   background: #FFF;
   padding-top: 1px;
@@ -111,6 +117,7 @@ hr {
 
 #sidebar .block {
   background: #FFF;
+  box-shadow: 5px 5px 15px #888;
 }
 
 #sidebar .block h4 {
@@ -347,6 +354,7 @@ ul.list li .item .avatar {
 
 #box .block {
   background: #FFF;
+  box-shadow: 5px 5px 15px #888;
 }
 
 #box .block h2 {
