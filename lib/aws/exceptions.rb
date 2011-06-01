@@ -75,15 +75,15 @@ module AWS
     end
 
     class Error < StandardError
-      
+
       attr_reader :transport_code, :obj
-      
+
       def initialize(message = '', obj = {} )
         @obj = obj
         @transport_code,  message = constantize "AWS::S3::ErrorCodes::#{code}"
         super(message)
       end
-      
+
       def code
         self.class.name.split(':').last
       end

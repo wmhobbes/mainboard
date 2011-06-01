@@ -20,29 +20,29 @@ Admin.controllers :accounts do
     end
   end
 
-  get :profile do 
+  get :profile do
     @account = current_account
     render 'accounts/profile'
   end
 
   put :update_profile do
     @account = Account.find(params[:id])
-    
-    profile = allow_attributes(params[:account], 
+
+    profile = allow_attributes(params[:account],
       :id,
       :name,
       :surname,
       :password,
       :password_confirmation
     )
-    
+
     if current_account.update_attributes(params[:account])
       flash[:notice] = 'Account was successfully updated.'
       redirect url(:accounts, :profile)
     else
       render 'accounts/profile'
-    end    
-    
+    end
+
   end
 
   get :edit, :with => :id do

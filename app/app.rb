@@ -67,5 +67,6 @@ class Mainboard < Padrino::Application
   # the main application should generate XML exceptions
   disable :flash
   disable :show_exceptions
+  disable :raise_errors
   #set :dump_errors, false
 end

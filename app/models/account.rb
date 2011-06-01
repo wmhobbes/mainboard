@@ -61,9 +61,9 @@ class Account
   def has_password?(password)
     ::BCrypt::Password.new(crypted_password) == password
   end
-  
+
   def administrator?
-    self.role.to_sym == :admin 
+    self.role.to_sym == :admin
   end
 
   def writable_by? passed_account
@@ -80,7 +80,7 @@ class Account
     regenerate_secret
     self
   end
-  
+
   def regenerate_secret
     self.secret = self.class.generate_secret
     self

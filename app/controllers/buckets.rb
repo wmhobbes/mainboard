@@ -5,7 +5,11 @@ Mainboard.controllers do
     logger.debug "+ bucket index"
     aws_authenticate
 
-    list_buckets
+    if anonymous_request?
+      redirect '/admin'
+    else
+      list_buckets
+    end
   end
 
   # get bucket

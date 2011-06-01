@@ -11,15 +11,15 @@ Bundler.require(:default, PADRINO_ENV)
 
 # miniconf
 Miniconf.defaults do
-  database.host = 'localhost'
+  database.hostname = 'localhost'
   database.port = 27017
   database.name = 'mainboard'
 end
 Miniconf.boot! :root => PADRINO_ROOT, :env_prefix => 'mainboard', :env => PADRINO_ENV,
   :database_service => 'mongodb'
 
-puts Miniconf.config.database.to_s
-
+# monkey patch error handling
+require File.join(PADRINO_ROOT, 'lib/padrino/application')
 
 ##
 # Enable devel logging
@@ -34,7 +34,6 @@ puts Miniconf.config.database.to_s
 Padrino.before_load do
   Miniconf.with_config do |c|
     logger.debug "-- options --\n#{c.to_s}"
-
   end
 end
 
