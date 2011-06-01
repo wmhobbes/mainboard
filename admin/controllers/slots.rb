@@ -3,7 +3,7 @@ Admin.controllers :slots, :parent => :bucket do
   get :index do
     @bucket = Bucket.find(params[:bucket_id])
     # check permission on bucket
-    
+
     @slots = Slot.where(:bucket_id => @bucket.id).all
     render 'slots/index'
   end
@@ -11,9 +11,9 @@ Admin.controllers :slots, :parent => :bucket do
   get :slot, :map => 'slot/:id' do
     bucket = Bucket.find(params[:bucket_id])
     only_admin_or_owner_of bucket
-    
+
     slot = bucket.slots.find(params[:id])
-    
+
     since = Time.httpdate(request.env['HTTP_IF_MODIFIED_SINCE']) rescue nil
 
      if since && (slot.bit.upload_date) <= since
@@ -22,7 +22,7 @@ Admin.controllers :slots, :parent => :bucket do
 
      since = Time.httpdate(request.env['HTTP_IF_UNMODIFIED_SINCE']) rescue nil
 
-     if (since && (slot.updated_at > since)) or (request.env['HTTP_IF_MATCH'] && 
+     if (since && (slot.updated_at > since)) or (request.env['HTTP_IF_MATCH'] &&
        (slot.bit.get_md5 != request.env['HTTP_IF_MATCH']))
        raise PreconditionFailed
      end
@@ -36,13 +36,13 @@ Admin.controllers :slots, :parent => :bucket do
      content_type slot.bit.type
      attachment slot.bit.name
 
-     [200, slot.bit]    
+     [200, slot.bit]
   end
 
   get :new do
     @bucket = Bucket.find(params[:bucket_id])
     only_admin_or_owner_of @bucket
-    
+
     @slot = Slot.new
     render 'slots/new'
   end
@@ -52,14 +52,14 @@ Admin.controllers :slots, :parent => :bucket do
     only_admin_or_owner_of @bucket
     logger.error params[:slot].pretty_inspect
     tempfile = params[:slot][:uploaded_file][:tempfile]
-    
+
     @slot = @bucket.slots.build(
       :bit => tempfile.open,
-      :bit_name => (params[:slot][:bit_name].blank? ? params[:slot][:uploaded_file][:filename] : 
+      :bit_name => (params[:slot][:bit_name].blank? ? params[:slot][:uploaded_file][:filename] :
         params[:slot][:bit_name]),
       :access => from_acl(params[:slot][:access])
     )
-    
+
     if @slot.save
       flash[:notice] = 'Slot was successfully created.'
 #      redirect url(:slots, :edit, :id => @slot.id, :bucket_id => @bucket)
@@ -71,7 +71,7 @@ Admin.controllers :slots, :parent => :bucket do
 
   get :edit, :with => :id do
     @bucket = Bucket.find(params[:bucket_id])
-    only_admin_or_owner_of @bucket    
+    only_admin_or_owner_of @bucket
     @slot = @bucket.slots.find(params[:id])
     render 'slots/edit'
   end
@@ -81,7 +81,7 @@ Admin.controllers :slots, :parent => :bucket do
     only_admin_or_owner_of @bucket
 
     @slot = @bucket.slots.find(params[:id])
-    
+
     if @slot.update_attributes(allow_attributes(params[:slot], :bit_name, :access))
       flash[:notice] = 'Slot was successfully updated.'
       redirect url(:slots, :edit, :id => @slot.id, :bucket_id => @bucket.id)
@@ -92,8 +92,8 @@ Admin.controllers :slots, :parent => :bucket do
 
   delete :destroy, :with => :id do
     bucket = Bucket.find(params[:bucket_id])
-    only_admin_or_owner_of bucket    
-    
+    only_admin_or_owner_of bucket
+
     slot = bucket.slots.find(params[:id])
     if slot.destroy
       flash[:notice] = 'Slot was successfully destroyed.'

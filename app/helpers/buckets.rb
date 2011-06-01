@@ -37,7 +37,7 @@ Mainboard.helpers do
   def get_bucket_content bucket_name
     bucket = get_bucket bucket_name
 
-    aws_only_can_read bucket
+    only_can_read bucket
 
     opts = {:conditions => {:bucket_id => bucket.id}, :order => "name"}
     limit = nil
@@ -122,7 +122,7 @@ Mainboard.helpers do
   def delete_bucket bucket_name
     bucket = Bucket.first(:name => bucket_name)
 
-    aws_only_owner_of bucket
+    only_owner_of bucket
 
     if bucket.slots.size > 0
       raise BucketNotEmpty

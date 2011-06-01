@@ -1,7 +1,7 @@
 Admin.controllers :buckets do
 
   get :index do
-    @buckets = current_account.administrator? ? Bucket.all : 
+    @buckets = current_account.administrator? ? Bucket.all :
       Bucket.where(:account_id => current_account.id).all
     render 'buckets/index'
   end
@@ -26,14 +26,14 @@ Admin.controllers :buckets do
   get :edit, :with => :id do
     @bucket = Bucket.find(params[:id])
     only_admin_or_owner_of @bucket
-    
+
     render 'buckets/edit'
   end
 
   put :update, :with => :id do
     @bucket = Bucket.find(params[:id])
     only_admin_or_owner_of @bucket
-    
+
     params[:bucket][:access] = from_acl params[:bucket][:access]
     if @bucket.update_attributes(params[:bucket])
       flash[:notice] = 'Bucket was successfully updated.'
@@ -46,7 +46,7 @@ Admin.controllers :buckets do
   delete :destroy, :with => :id do
     bucket = Bucket.find(params[:id])
     only_admin_or_owner_of bucket
-    
+
     if bucket.destroy
       flash[:notice] = 'Bucket was successfully destroyed.'
     else

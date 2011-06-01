@@ -9,31 +9,31 @@ Mainboard.helpers do
   def get_slot_content bucket_name, slot_name
     bucket = get_bucket bucket_name
     slot = get_slot bucket, slot_name
-    
-    aws_only_can_read slot
-    
+
+    only_can_read slot
+
     since = Time.httpdate(request.env['HTTP_IF_MODIFIED_SINCE']) rescue nil
-    
+
     if since && (slot.bit.upload_date) <= since
       raise NotModified
     end
-    
+
     since = Time.httpdate(request.env['HTTP_IF_UNMODIFIED_SINCE']) rescue nil
 
-    if (since && (slot.updated_at > since)) or (request.env['HTTP_IF_MATCH'] && 
+    if (since && (slot.updated_at > since)) or (request.env['HTTP_IF_MATCH'] &&
       (slot.bit.get_md5 != request.env['HTTP_IF_MATCH']))
       raise PreconditionFailed
     end
-    
+
     if request.env['HTTP_IF_NONE_MATCH'] && (slot.bit.get_md5 == request.env['HTTP_IF_NONE_MATCH'])
       raise NotModified
     end
-    
+
     last_modified slot.updated_at
     etag slot.bit.get_md5
     content_type slot.bit.type
     attachment slot.bit.name
-    
+
     [200, slot.bit]
   end
 
@@ -45,9 +45,9 @@ Mainboard.helpers do
 
   def put_slot bucket_name, slot_name, io
     bucket = get_bucket bucket_name
-    
-    aws_only_can_write bucket
-    
+
+    only_can_write bucket
+
     slot = bucket.slots.where(:file_name => slot_name).first
     io.path = slot_name
 
@@ -66,8 +66,8 @@ Mainboard.helpers do
 
     bucket = get_bucket bucket_name
     slot = get_slot bucket, slot_name
-    
-    aws_only_can_write slot
+
+    only_can_write slot
 
     slot.destroy
   end

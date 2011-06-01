@@ -7,7 +7,7 @@ Miniconf.with_config do |c|
   )
   MongoMapper.database = c.database.name
   if c.database.username && c.database.password
-    
+
     MongoMapper.database.authenticate(
       c.database.username,
       c.database.password

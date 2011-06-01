@@ -7,7 +7,7 @@ Admin.helpers do
 
   def only_admin_or_owner_of(target)
    halt 404, "Not Found" unless current_account.administrator? or target.owned_by?(current_account)
-   
+
   rescue
     halt 404, "Not Found"
   end
