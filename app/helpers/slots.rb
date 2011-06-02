@@ -1,9 +1,4 @@
 
-# lets have this behave more like a file ;p
-class StringIO
-  attr_accessor :path
-end
-
 Mainboard.helpers do
 
   def get_slot_content bucket_name, slot_name
@@ -49,7 +44,12 @@ Mainboard.helpers do
     only_can_write bucket
 
     slot = bucket.slots.where(:bit_name => slot_name).first
-    io.path = slot_name if io.kind_of? StringIO
+
+    # fixes joint trying to access :path on every IO stream, still better than a temp file ;p
+    unless io.respond_to? :path
+      io.class.instance_eval { attr_accessor :path }
+      io.path = slot_name
+    end
 
     if slot.nil?
       slot = bucket.slots.create(

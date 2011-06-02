@@ -151,7 +151,7 @@ module AWS
         end
 
         def extract_significant_parameter
-          request_path[/[&?](acl|torrent|logging)(?:&|=|$)/, 1]
+          request_path[/[&?](acl|torrent|logging|versioning)(?:&|=|$)/, 1]
         end
 
         def only_path
