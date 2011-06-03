@@ -48,8 +48,8 @@ Mainboard.helpers do
     # fixes joint trying to access :path on every IO stream, still better than a temp file ;p
     unless io.respond_to? :path
       io.class.instance_eval { attr_accessor :path }
-      io.path = slot_name
     end
+    io.path ||= slot_name
 
     if slot.nil?
       slot = bucket.slots.create(
@@ -60,6 +60,8 @@ Mainboard.helpers do
     else
       raise SlotAlreadyExists
     end
+
+    etag slot.bit.get_md5
   end
 
   def delete_slot bucket_name, slot_name

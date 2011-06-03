@@ -103,7 +103,7 @@ Mainboard.helpers do
         contents.each { |c|
           x.Contents do
             x.Key c.bit_name
-            x.LastModified c.bit.upload_date.strftime("%Y-%m-%dT%H:%M:%S.000%Z")
+            x.LastModified c.bit.upload_date.strftime("%Y-%m-%dT%H:%M:%S.000Z") # was strftime("%Y-%m-%dT%H:%M:%S.000%Z")
             x.ETag c.bit.get_md5
             x.Size c.bit.grid_io.file_length.to_i
             x.StorageClass "STANDARD"
