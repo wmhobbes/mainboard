@@ -38,6 +38,11 @@ Mainboard.helpers do
     slot
   end
 
+  def get_slot_acls bucket, slot_name
+    slot = get_slot bucket, slot_name
+    acl_document slot
+  end
+
   def put_slot bucket_name, slot_name, io
     bucket = get_bucket bucket_name
 
