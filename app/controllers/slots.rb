@@ -17,7 +17,7 @@ Mainboard.controllers do
     when :torrent
       raise NotImplemented
     when :acl
-      get_slot_acl bucket, slot.join('/')
+      get_slot_acls bucket, slot.join('/')
     else
       get_slot_content bucket, slot.join('/')
     end
