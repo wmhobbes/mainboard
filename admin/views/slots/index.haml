@@ -21,7 +21,7 @@
             %td.first=link_to slot.bit_name, url(:slots, :slot, :id => slot.id, :bucket_id => @bucket.id)
             %td=slot.bit_size
             %td=slot.bit_type
-            %td=acl slot.access
+            %td=slot.access
             %td=slot.updated_at
             %td.last
               =button_to pat(:edit), url(:slots, :edit, :id => slot.id, :bucket_id => @bucket.id), :method => :get, :class => :button_to

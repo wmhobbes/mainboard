@@ -16,18 +16,10 @@ module AWS
           @request = request
           extract_auth
           @canonical = CanonicalString.new(request)
-          #pp request.env
-          #puts "-- auth ---"
-          #pp @canonical.headers
-          #pp @canonical
         end
 
         def validate_secret(secret_access_key)
           return false if secret_access_key.blank?
-
-          puts "Encoded can: " +  encoded_canonical(secret_access_key)
-          puts "Secret: " + secret
-
           encoded_canonical(secret_access_key) == secret
         end
 
@@ -147,15 +139,11 @@ module AWS
         end
 
         def path
-          [only_path, extract_significant_parameter].compact.join('?')
+          [request_path, extract_significant_parameter].compact.join('?')
         end
 
         def extract_significant_parameter
-          request_path[/[&?](acl|torrent|logging|versioning)(?:&|=|$)/, 1]
-        end
-
-        def only_path
-          request_path[/^[^?]*/]
+          query_string[/(acl|torrent|logging|versioning|location)(?:&|=|$)/, 1]
         end
 
       end

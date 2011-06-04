@@ -34,7 +34,6 @@ Admin.controllers :buckets do
     @bucket = Bucket.find(params[:id])
     only_admin_or_owner_of @bucket
 
-    params[:bucket][:access] = from_acl params[:bucket][:access]
     if @bucket.update_attributes(params[:bucket])
       flash[:notice] = 'Bucket was successfully updated.'
       redirect url(:buckets, :edit, :id => @bucket.id)

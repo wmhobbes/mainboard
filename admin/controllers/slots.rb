@@ -56,8 +56,8 @@ Admin.controllers :slots, :parent => :bucket do
     @slot = @bucket.slots.build(
       :bit => tempfile.open,
       :bit_name => (params[:slot][:bit_name].blank? ? params[:slot][:uploaded_file][:filename] :
-        params[:slot][:bit_name]),
-      :access => from_acl(params[:slot][:access])
+        params[:slot][:bit_name]).sub(/^[\/\.]*/,''),
+      :access => params[:slot][:access]
     )
 
     if @slot.save
@@ -81,6 +81,7 @@ Admin.controllers :slots, :parent => :bucket do
     only_admin_or_owner_of @bucket
 
     @slot = @bucket.slots.find(params[:id])
+    params[:slot][:bit_name].sub!(/^[\/\.]*/,'') if params[:slot]
 
     if @slot.update_attributes(allow_attributes(params[:slot], :bit_name, :access))
       flash[:notice] = 'Slot was successfully updated.'

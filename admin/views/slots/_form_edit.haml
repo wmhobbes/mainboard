@@ -19,7 +19,7 @@
 .group
   =f.label :access
   =f.error_message_on :access
-  =f.select :access, :options => AWS::S3::ACLs::CANNED_ACLS
+  =f.select :access, :options => Slot.canned_acls
   %span.description controls the access to this slot.
 
 

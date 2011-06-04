@@ -8,7 +8,6 @@ class Mainboard < Padrino::Application
   register Padrino::Helpers
 
   include AWS::S3::Errors
-  include AWS::S3::ACLs
 
   #enable :sessions
 

@@ -4,13 +4,15 @@ Mainboard.helpers do
         auth = AWS::S3::Authentication::Request.new(request)
         @amz_headers = auth.amz_headers
 
-        @account = Account.first(:conditions => {:key => auth.key})
-        if @account && !auth.validate_secret(@account.secret)
-          raise BadAuthentication
-        end
+        if auth.key
+          @account = Account.where(:key => auth.key).first
+          if @account && !auth.validate_secret(@account.secret)
+            raise BadAuthentication
+          end
 
-        logger.debug "- authenticated as #{@account.identity}" if @account
-        logger.debug @amz_headers.pretty_inspect
+          logger.debug "- authenticated as #{@account.identity}" if @account
+          logger.debug @amz_headers.pretty_inspect
+        end
       end
 
       def anonymous_request?

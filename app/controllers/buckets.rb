@@ -1,11 +1,23 @@
 Mainboard.controllers do
 
-  # list all my buckets
+  before do
+    logger.debug "-- before buckets --"
+    aws_authenticate
+    headers :server => "Mainboard"
+
+    @input = request.params
+    puts "--- input ---"
+    puts @input.inspect
+  end
+
+
+  # GET Service
   get :index do
     logger.debug "+ bucket index"
-    aws_authenticate
 
+    # if it's an anonymous request for / assume it wants the admin page
     if anonymous_request?
+      logger.debug "- redirect"
       redirect '/admin'
     else
       list_buckets
@@ -15,32 +27,52 @@ Mainboard.controllers do
   # get bucket
   get '/:bucket' do
     logger.debug "+ bucket get"
-    aws_authenticate
 
-    @input = request.params
-    if @input.has_key? 'torrent'
+    case subresource
+    when :policy, :logging,
+         :notification
       raise NotImplemented
+    when :location
+      # seems easy
+    when :version
+      raise NotImplemented
+    when :versioning
+      # easy to give at least an answer
+    when :website
+      # seems easy
+    when :acl
+      get_bucket_acls params[:bucket]
+    else
+      get_bucket_content params[:bucket]
     end
-
-    get_bucket_content params[:bucket]
   end
-
 
   # bucket create
   put '/:bucket' do
     logger.debug "+ bucket create"
-    aws_authenticate
 
-    create_bucket params[:bucket]
+    case subresource
+    when :policy, :logging
+      raise NotImplemented
+    when :versioning
+      # todo
+    when :acl
+      put_bucket_acl params[:bucket]
+    else
+      create_bucket params[:bucket]
+    end
   end
 
-
-  # bucket delete
+  # delete Bucket
   delete '/:bucket' do
     logger.debug "+ bucket delete"
-    aws_authenticate
 
-    delete_bucket params[:bucket]
+    case subresource
+    when :website, :policy
+      raise NotImplemented
+    else
+      delete_bucket params[:bucket]
+    end
   end
 
 end

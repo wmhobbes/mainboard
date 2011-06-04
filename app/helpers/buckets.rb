@@ -34,6 +34,12 @@ Mainboard.helpers do
     bucket
   end
 
+  def get_bucket_acls bucket_name
+    bucket = get_bucket bucket_name
+    acl_document bucket
+
+  end
+
   def get_bucket_content bucket_name
     bucket = get_bucket bucket_name
 
@@ -45,23 +51,23 @@ Mainboard.helpers do
     limit = nil
 
     if @input['prefix']
-      opts[:conditions] = opts[:conditions].merge({:file_name => /#{@input['prefix']}.*/i})
+      opts[:conditions] = opts[:conditions].merge({:bit_name => /^#{@input['prefix']}.*/i})
     end
 
     if @input['marker']
       opts[:offset] = @input['marker'].to_i
     end
 
-    if @input['max-keys']
-      opts[:limit] = @input['max-keys'].to_i
-    end
+    opts[:limit] =
+      if @input['max-keys']
+        @input['max-keys'].to_i
+      else
+        1000
+      end
 
     slot_count = Slot.all(:conditions => opts[:conditions]).size
     contents = Slot.all(opts)
-
-    logger.debug "Input info: " + @input.to_s
-    logger.debug "Opts: " + opts.to_s
-
+    truncated = slot_count > contents.length + opts['offset'].to_i
 
     if @input['delimiter']
       @input['prefix'] = '' if @input['prefix'].nil?
@@ -81,14 +87,14 @@ Mainboard.helpers do
       end
 
       # The contents are everything that doesn't have a common prefix
-      contents = contents.reject do |c|
+      contents.reject! do |c|
         common_prefixes.include? get_prefix(c)
       end
 
       logger.debug "\e[1;31mContents:\e[0m " + contents.inspect
     end
 
-    content_type "application/xml"
+    content_type :xml
 
     builder { |x|
       x.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
@@ -98,12 +104,12 @@ Mainboard.helpers do
         x.Marker @input['marker'] if @input['marker']
         x.Delimiter @input['delimiter'] if @input['delimiter']
         x.MaxKeys @input['max-keys'] if @input['max-keys']
-        x.IsTruncated slot_count > contents.length + opts['offset'].to_i
+        x.IsTruncated truncated
 
         contents.each { |c|
           x.Contents do
             x.Key c.bit_name
-            x.LastModified c.bit.upload_date.strftime("%Y-%m-%dT%H:%M:%S.000Z") # was strftime("%Y-%m-%dT%H:%M:%S.000%Z")
+            x.LastModified c.bit.upload_date.strftime("%Y-%m-%dT%H:%M:%S.000%Z")
             x.ETag c.bit.get_md5
             x.Size c.bit.grid_io.file_length.to_i
             x.StorageClass "STANDARD"

@@ -1,7 +1,7 @@
 
 Mainboard.helpers do
 
-  def get_slot_content bucket_name, slot_name
+  def get_slot_content bucket_name, slot_name, body = true
     bucket = get_bucket bucket_name
     slot = get_slot bucket, slot_name
 
@@ -29,7 +29,7 @@ Mainboard.helpers do
     content_type slot.bit.type
     attachment slot.bit.name
 
-    [200, slot.bit]
+    [200, slot.bit] if body
   end
 
   def get_slot bucket, slot_name
@@ -42,6 +42,7 @@ Mainboard.helpers do
     bucket = get_bucket bucket_name
 
     only_can_write bucket
+    slot_name.sub!(/^[\/\.]*/,'')
 
     slot = bucket.slots.where(:bit_name => slot_name).first
 
