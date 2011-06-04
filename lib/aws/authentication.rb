@@ -103,7 +103,7 @@ module AWS
         end
 
         def request_path
-          env['PATH_INFO']
+          env['ORIGINAL_PATH_INFO'] || env['PATH_INFO']
         end
 
         def query_string

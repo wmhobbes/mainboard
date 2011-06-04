@@ -5,6 +5,10 @@ Mainboard.controllers do
     aws_authenticate
     headers :server => "Mainboard"
 
+    logger.debug "--- env ---"
+    logger.debug request.env.inspect
+
+
     @input = request.params
     puts "--- input ---"
     puts @input.inspect

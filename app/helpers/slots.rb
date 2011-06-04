@@ -39,7 +39,7 @@ Mainboard.helpers do
   end
 
   def get_slot_acls bucket_name, slot_name
-    bucket = get_bucket bucket_name    
+    bucket = get_bucket bucket_name
     slot = get_slot bucket, slot_name
     only_can_read slot # there's a specific permission for this
 

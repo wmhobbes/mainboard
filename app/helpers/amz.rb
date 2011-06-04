@@ -52,7 +52,7 @@ Mainboard.helpers do
                end
                x.Permission p.to_s.upcase
              end
-           end          
+           end
           # iterate over other grants
         end
 

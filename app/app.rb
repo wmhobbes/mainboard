@@ -1,9 +1,18 @@
+require 'rack'
 #require 'rack/fiber_pool'
 require 'pp'
+
+Rack.autoload :BucketTumbler, 'rack/bucket_tumbler'
 
 class Mainboard < Padrino::Application
 #  use Rack::FiberPool
 #  use Rack::Session::Cookie
+
+  #
+  Miniconf.with_config do |c|
+    use Rack::BucketTumbler, :domain => c.options.domain if c.options.domain
+  end
+
   register Padrino::Mailer
   register Padrino::Helpers
 
