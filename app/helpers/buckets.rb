@@ -36,6 +36,8 @@ Mainboard.helpers do
 
   def get_bucket_acls bucket_name
     bucket = get_bucket bucket_name
+
+    only_can_read bucket ## there's a specific permission for this
     acl_document bucket
 
   end
