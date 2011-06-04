@@ -35,11 +35,11 @@ module CommonPermissions
   end
 
   def acl_writable_by? current_account
-    check_access current_account, :write_acls
+    check_access current_account, :write_acp
   end
 
   def acl_readable_by? current_account
-    check_access current_account, :read_acls
+    check_access current_account, :read_acp
   end
 
   def owned_by? current_account

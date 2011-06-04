@@ -32,9 +32,27 @@ Mainboard.helpers do
                       :'xsi:type' => 'CanonicalUser' do
               x.ID object.owner.key
               x.DisplayName object.owner.identity
-          end
+            end
             x.Permission 'FULL_CONTROL'
           end
+          object.auth_access.each do |p|
+            x.Grant do
+              x.Grantee :'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+                        :'xsi:type' => 'Group' do
+              x.URI 'http://acs.amazonaws.com/groups/global/AllUsers'
+              end
+              x.Permission p.to_s.upcase
+            end
+          end
+          object.auth_access.each do |p|
+             x.Grant do
+               x.Grantee :'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+                         :'xsi:type' => 'Group' do
+                 x.URI 'http://acs.amazonaws.com/groups/global/AuthenticatedUsers'
+               end
+               x.Permission p.to_s.upcase
+             end
+           end          
           # iterate over other grants
         end
 

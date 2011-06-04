@@ -27,7 +27,7 @@ Mainboard.helpers do
     last_modified slot.updated_at
     etag slot.bit.get_md5
     content_type slot.bit.type
-    attachment slot.bit.name
+    #attachment slot.bit.name
 
     [200, slot.bit] if body
   end
