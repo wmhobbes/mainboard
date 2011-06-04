@@ -3,7 +3,7 @@ source :rubygems
 # Project requirements
 gem 'rake'
 gem 'rack-flash'
-gem 'thin' # or mongrel
+gem 'thin'
 gem 'rack-fiber_pool', '~> 0.9.1'
 
 # Component requirements
@@ -19,6 +19,7 @@ gem 'haml', '~> 3.1'
 
 # xml
 gem 'builder'
+gem 'xml-simple', :require => 'xmlsimple'
 
 # database
 gem 'mongo_mapper', '~> 0.9.1'

@@ -61,7 +61,7 @@ Mainboard.controllers do
     when :versioning
       # todo
     when :acl
-      put_bucket_acl params[:bucket]
+      put_bucket_acls params[:bucket]
     else
       create_bucket params[:bucket]
     end

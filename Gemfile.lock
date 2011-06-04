@@ -131,7 +131,7 @@ GEM
       archive-tar-minitar (>= 0.5.2)
     rubyzip (0.9.4)
     safe_shell (1.0.1)
-    selenium-webdriver (0.2.0)
+    selenium-webdriver (0.2.1)
       childprocess (>= 0.1.7)
       ffi (>= 1.0.7)
       json_pure
@@ -152,6 +152,7 @@ GEM
     wand (0.4)
       mime-types
       safe_shell (~> 1.0.0)
+    xml-simple (1.0.16)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -183,3 +184,4 @@ DEPENDENCIES
   thin
   tilt (>= 1.1)
   wand (~> 0.4)
+  xml-simple

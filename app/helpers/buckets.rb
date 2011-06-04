@@ -42,6 +42,16 @@ Mainboard.helpers do
 
   end
 
+  def put_bucket_acls bucket_name, io
+    bucket = get_bucket bucket_name
+
+    only_can_write bucket ## there's a specific permission for this
+
+    acl_parse io.read, bucket
+    bucket.save!
+  end
+
+
   def get_bucket_content bucket_name
     bucket = get_bucket bucket_name
 

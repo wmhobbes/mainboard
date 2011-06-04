@@ -8,11 +8,17 @@ module CommonPermissions
     'authenticated-read-write' => {:public => [], :auth => [:read, :write]}
   }
 
+  PERMS = [:read, :write, :write_acp, :read_acp, :full_control]
+
   def self.included(klass)
     klass.extend(ClassMethods)
   end
 
   module ClassMethods
+
+    def perms
+      CommonPermissions::PERMS
+    end
 
     def canned_acls
       CommonPermissions::CANNED_ACLS.keys
@@ -50,9 +56,9 @@ module CommonPermissions
     return true if owned_by? given_account
 
     if given_account
-      auth_access.include? permission.to_sym
+      auth_access.include?(:full_control) || auth_access.include?(permission.to_sym)
     else
-      public_access.include? permission.to_sym
+      public_access.include?(:full_control) || public_access.include?(permission.to_sym)
     end
   end
 

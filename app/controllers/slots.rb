@@ -33,7 +33,7 @@ Mainboard.controllers do
     logger.debug "+ slot put"
     case subresource
     when :acl
-      put_slot_acl bucket, slot.join('/'), request.body
+      put_slot_acls bucket, slot.join('/'), request.body
     else
       put_slot bucket, slot.join('/'), request.body
     end
