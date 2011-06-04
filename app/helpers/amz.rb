@@ -7,7 +7,7 @@ Mainboard.helpers do
 
 
   def amz_requested_acl
-    AWS::S3::ACLs::CANNED_ACLS[amz_headers('x-amz-acl') || 'private']
+    amz_headers('x-amz-acl') || 'private'
   end
 
   def subresource
