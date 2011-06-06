@@ -3,15 +3,9 @@ Mainboard.controllers do
   before do
     logger.debug "-- before buckets --"
     aws_authenticate
-    headers :server => "Mainboard"
-
-    logger.debug "--- env ---"
-    logger.debug request.env.inspect
-
+    headers 'Server' => "Mainboard"
 
     @input = request.params
-    puts "--- input ---"
-    puts @input.inspect
   end
 
 

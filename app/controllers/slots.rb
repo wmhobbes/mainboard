@@ -3,11 +3,9 @@ Mainboard.controllers do
   before do
     logger.debug "-- before slots --"
     aws_authenticate
-    headers :server => "Mainboard"
+    headers 'Server' => "Mainboard"
 
     @input = request.params
-    puts "--- input ---"
-    puts @input.inspect
   end
 
   # get slot
