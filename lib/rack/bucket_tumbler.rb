@@ -13,7 +13,7 @@ module Rack
     def call(env)
 
       if(@domain)
-        if env['HTTP_HOST'] =~ /^([-\w]+)\.#{@domain}$/
+        if env['HTTP_HOST'] =~ /^([-\w]+)\.#{@domain}(?:\:\d+)?$/
           bucket = $~.captures.first
           env['TUMBLER_BUCKET'] = bucket
           env['ORIGINAL_PATH_INFO'] = env['PATH_INFO'].dup
