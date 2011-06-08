@@ -29,8 +29,8 @@ Padrino.configure_apps do
   # enable :sessions
   set :session_secret, '2ba76cefb1b00b697d56d4fcbbe6cf26ae376322c64a855d6b8534b06c983725'
 
-  set :_bootstrap_admin_identity, 'admin@intercom.it'
-  set :_bootstrap_admin_password, 'yyuuyy'
+  set :_bootstrap_admin_identity, 'admin@example.com'
+  set :_bootstrap_admin_password, 'admin'
   set :_bootstrap_admin_key,      '44CF9590006BF252F707'
 end
 
